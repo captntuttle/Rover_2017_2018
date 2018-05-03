@@ -19,6 +19,8 @@ GPS_TOPIC_NAME = "/rover_status/gps_status"
 JETSON_TOPIC_NAME = "/rover_status/jetson_status"
 MISC_TOPIC_NAME = "/rover_status/misc_status"
 
+WHEEL_TOPIC_NAME = "/rover_status/wheel_status"
+
 
 class SensorCore(QtCore.QThread):
     # ########## create signals for slots ##########
@@ -34,6 +36,13 @@ class SensorCore(QtCore.QThread):
     bogie_connection_1_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
     bogie_connection_2_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
     bogie_connection_3_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+
+    wheel_connection_1_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+    wheel_connection_2_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+    wheel_connection_3_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+    wheel_connection_4_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+    wheel_connection_5_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
+    wheel_connection_6_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
 
     camera_zed_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
     camera_under_stylesheet_change_ready__signal = QtCore.pyqtSignal(str)
@@ -70,6 +79,14 @@ class SensorCore(QtCore.QThread):
         self.bogie_right = self.screen_main_window.right_bogie  # type: QtWidgets.QLabel
         self.bogie_left = self.screen_main_window.left_bogie  # type: QtWidgets.QLabel
         self.bogie_rear = self.screen_main_window.rear_bogie  # type: QtWidgets.QLabel
+
+        self.wheel_1 = self.screen_main_window.wheel_1  # type: QtWidgets.QLabel
+        self.wheel_2 = self.screen_main_window.wheel_2  # type: QtWidgets.QLabel
+        self.wheel_3 = self.screen_main_window.wheel_3  # type: QtWidgets.QLabel
+        self.wheel_4 = self.screen_main_window.wheel_4  # type: QtWidgets.QLabel
+        self.wheel_5 = self.screen_main_window.wheel_5  # type: QtWidgets.QLabel
+        self.wheel_6 = self.screen_main_window.wheel_6  # type: QtWidgets.QLabel
+
         self.clock = self.screen_main_window.clock_qlcdnumber  # type: QtWidgets.QLCDNumber
         self.cpu = self.screen_main_window.cpu  # type: QtWidgets.QLabel
         self.ram = self.screen_main_window.ram  # type: QtWidgets.QLabel
@@ -166,6 +183,9 @@ class SensorCore(QtCore.QThread):
             # self.bogie_rear.setStyleSheet("background-color: darkgreen;")
             self.bogie_connection_3_stylesheet_change_ready__signal.emit("background-color: darkgreen;")
 
+    def __wheel_callback(self, data):
+
+
     def __jetson_callback(self, data):
         self.jetson_cpu_update_ready__signal.emit("TX2 CPU\n" + str(data.jetson_CPU) + "%")
 
@@ -241,6 +261,14 @@ class SensorCore(QtCore.QThread):
         self.bogie_connection_1_stylesheet_change_ready__signal.connect(self.bogie_right.setStyleSheet)
         self.bogie_connection_2_stylesheet_change_ready__signal.connect(self.bogie_left.setStyleSheet)
         self.bogie_connection_3_stylesheet_change_ready__signal.connect(self.bogie_rear.setStyleSheet)
+
+        self.wheel_connection_1_stylesheet_change_ready__signal.connect(self.wheel_1.setStyleSheet)
+        self.wheel_connection_2_stylesheet_change_ready__signal.connect(self.wheel_2.setStyleSheet)
+        self.wheel_connection_3_stylesheet_change_ready__signal.connect(self.wheel_3.setStyleSheet)
+        self.wheel_connection_4_stylesheet_change_ready__signal.connect(self.wheel_4.setStyleSheet)
+        self.wheel_connection_5_stylesheet_change_ready__signal.connect(self.wheel_5.setStyleSheet)
+        self.wheel_connection_6_stylesheet_change_ready__signal.connect(self.wheel_6.setStyleSheet)
+
         self.camera_zed_stylesheet_change_ready__signal.connect(self.zed.setStyleSheet)
         self.camera_under_stylesheet_change_ready__signal.connect(self.under_cam.setStyleSheet)
         self.camera_chassis_stylesheet_change_ready__signal.connect(self.chassis_cam.setStyleSheet)
